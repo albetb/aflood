@@ -1,0 +1,98 @@
+#! /usr/bin/python
+# -*- coding: utf-8 -*-
+
+from __future__ import print_function
+import os
+
+m = 0
+n = 0
+t = 0
+
+print ("Welcome to AFLOOD v1.5.7")
+print ("($ = Fragment packets)")
+print ("($$ = $+Spoof MAC address)")
+print ("[1]: Nmap scan $")
+print ("[2]: OS finding (Nmap) $")
+print ("[3]: Port scan (Nmap) $$")
+print ("[4]: Firewall detection (Nmap) $")
+print ("[5]: Firewall scan (Nmap) $")
+print ("[6]: Zombie scan (Nmap)")
+print ("[8]: Ping flooding")
+print ("[9]: Ping flooding (with timeout)")
+print ("[0]: Exit")
+
+def nmap(m):
+    list=["OS finding","Port scanning","Firewall Detection","Firewall scan (N)","Zombie scan (?)"]
+    print (list[m-2])
+    print("Write the IP of the target (last digit)")
+    n = int(input("(0-255): "))
+    if n < 255 and n > 0 :
+        if m == 2:
+            print("OS 192.168.1.", n, sep="")
+            cmdstring = "nmap -A -f 192.168.1.%s" % (n)
+            #--spoof-mac 0 -e -Pn 
+        elif m == 3:
+            print("Port scanning 192.168.1.", n, sep="")
+            cmdstring = "nmap --spoof-mac 0 -v -sT --open -Pn -PN -sV 192.168.1.%s" % (n)
+        elif m == 4:
+            print("Firewall detection at 192.168.1.", n, sep="")
+            cmdstring = "nmap -sA -f -Pn -sV 192.168.1.%s" % (n)
+        elif m == 5:
+            print("Select firewall scan type:")
+            print ("[1]: TCP Null scan")
+            print ("[2]: TCP Fin scan")
+            print ("[3]: TCP Xmas scan")
+            list=["Null","Fin","Xmas"]
+            m = int(input("(1-3): "))
+            print("TCP ",list[m-1]," scan at 192.168.1.", n, sep="")
+            if m == 1:
+                cmdstring = "nmap -sN -f 192.168.1.%s" % (n)
+            elif m == 2:
+                cmdstring = "nmap -sF -f 192.168.1.%s" % (n)
+            elif m == 3:
+                cmdstring = "nmap -sX -f 192.168.1.%s" % (n)
+        elif m == 6:
+            print("Write the IP of the zombie (last digit)")
+            m = int(input("(0-255): "))
+            print("Zombie scan at 192.168.1.", n, sep="")
+            cmdstring = "nmap -sI 192.168.1.%s 192.168.1.%s" % (m, n)
+            
+        os.system(cmdstring)
+    else:
+        print("Wrong number!")
+
+def ping(m):
+    list = ["Ping flooding","Ping flooding (with timeout)"]
+    print (list[m-8])
+    print("Write the IP (last digit)")
+    n = int(input("(0-255): "))
+    if n < 255 and n > 0 :
+        print("Ping flooding at IP 192.168.1.", n, sep="")
+        if m == 8:
+            cmdstring = "ping  -f -i 0.001 -s 65000 192.168.1.%s" % (n)
+        else:
+            print("Write the timeout (in second)")
+            t = int(input("(Second): "))
+            cmdstring = "ping -f -i 0.001 -w %s -s 65000 192.168.1.%s" % (t, n)
+        os.system(cmdstring)
+    else:
+        print("Wrong number!")
+    
+while 1 == 1:
+    m = int(input("Insert a number: "))
+
+    if m == 1:
+        print ("Nmap scan")
+        os.system("nmap -f -sn 192.168.1.1/24")
+
+    elif m > 1 and m < 7 :
+        nmap(m)
+
+    elif m == 8 or m == 9:
+        ping(m)
+
+    elif m == 0:
+        print ("Exit")
+        exit()
+
+#><
