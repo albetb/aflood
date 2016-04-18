@@ -17,5 +17,4 @@ os.system("git config --global user.name\"albetb\"")
 cmdstring = "git commit -m \"%s\"" % (rep_name)
 os.system(cmdstring)
 os.system("git push origin master")
-os.system("albetb")
 
