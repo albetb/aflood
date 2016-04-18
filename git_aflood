@@ -5,11 +5,17 @@ rep_name = raw_input("Repository name: ")
 
 print ("Adding file to github")
 
-#cmdstring = "cd /home/pi/reps/aflood"
-#os.system(cmdstring)
+
+#for some reasons the os.system cannot change the directory
+#so when execute this program you have to be in /home/pi/reps/aflood
+#cd /home/pi/reps/aflood
+
+
 os.system("git add -A")
 os.system("git config --global user.email\"albetb@hotmail.it\"")
 os.system("git config --global user.name\"albetb\"")
 cmdstring = "git commit -m \"%s\"" % (rep_name)
 os.system(cmdstring)
 os.system("git push origin master")
+os.system("albetb")
+
