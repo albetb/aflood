@@ -9,7 +9,7 @@ select = 0
 ip_num = 0
 time = 0
 
-print ("Welcome to AFLOOD v1.6")
+print ("Welcome to AFLOOD v1.6.1")
 print ("[1]: Nmap scan $")
 print ("[2]: Other Nmap options")
 print ("[9]: DOS attack")

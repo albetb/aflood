@@ -1,5 +1,8 @@
 Changelog 
 
+Version 1.6.1
+*Added git_aflood for add this folder to git easely
+
 Version 1.6
 *More readable variable
 *Better menu
