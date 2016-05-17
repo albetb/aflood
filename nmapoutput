@@ -1,0 +1,48 @@
+<?xml version="1.0"?>
+<!DOCTYPE nmaprun>
+<?xml-stylesheet href="file:///usr/bin/../share/nmap/nmap.xsl" type="text/xsl"?>
+<!-- Nmap 6.47 scan initiated Thu May  5 10:59:09 2016 as: nmap -f -sn -oX /root/Desktop/aflood/nmapoutput 192.168.1.1/24 -->
+<nmaprun scanner="nmap" args="nmap -f -sn -oX /root/Desktop/aflood/nmapoutput 192.168.1.1/24" start="1462445949" startstr="Thu May  5 10:59:09 2016" version="6.47" xmloutputversion="1.04">
+<verbose level="0"/>
+<debugging level="0"/>
+<host><status state="up" reason="arp-response" reason_ttl="0"/>
+<address addr="192.168.1.1" addrtype="ipv4"/>
+<address addr="A4:99:47:52:54:6F" addrtype="mac" vendor="Huawei Technologies Co."/>
+<hostnames>
+</hostnames>
+<times srtt="332" rttvar="2124" to="100000"/>
+</host>
+<host><status state="up" reason="arp-response" reason_ttl="0"/>
+<address addr="192.168.1.5" addrtype="ipv4"/>
+<address addr="24:DB:ED:0A:BE:3D" addrtype="mac" vendor="Samsung Electronics Co."/>
+<hostnames>
+</hostnames>
+<times srtt="38025" rttvar="27733" to="148957"/>
+</host>
+<host><status state="up" reason="arp-response" reason_ttl="0"/>
+<address addr="192.168.1.6" addrtype="ipv4"/>
+<address addr="00:24:54:F8:A8:D4" addrtype="mac" vendor="Samsung Electronics CO."/>
+<hostnames>
+</hostnames>
+<times srtt="215963" rttvar="215963" to="1079815"/>
+</host>
+<host><status state="up" reason="arp-response" reason_ttl="0"/>
+<address addr="192.168.1.7" addrtype="ipv4"/>
+<address addr="00:0F:55:A8:0A:76" addrtype="mac" vendor="Datawire Communication Networks"/>
+<hostnames>
+</hostnames>
+<times srtt="210160" rttvar="210160" to="1050800"/>
+</host>
+<host><status state="up" reason="localhost-response" reason_ttl="0"/>
+<address addr="192.168.1.4" addrtype="ipv4"/>
+<hostnames>
+</hostnames>
+</host>
+<host><status state="up" reason="localhost-response" reason_ttl="0"/>
+<address addr="192.168.1.111" addrtype="ipv4"/>
+<hostnames>
+</hostnames>
+</host>
+<runstats><finished time="1462445966" timestr="Thu May  5 10:59:26 2016" elapsed="16.96" summary="Nmap done at Thu May  5 10:59:26 2016; 256 IP addresses (6 hosts up) scanned in 16.96 seconds" exit="success"/><hosts up="6" down="250" total="256"/>
+</runstats>
+</nmaprun>
